@@ -5,7 +5,8 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp'
 import User from '../views/User'
-
+import SurveyList from '../views/SurveyList'
+import WriteSurvey from '../views/WriteSurvey'
 Vue.use(VueRouter)
 
 const rejectAuthUser = (to, from, next) => {
@@ -56,6 +57,16 @@ const routes = [
     name: 'User',
     beforeEnter: onlyAuthUser,
     component: User
+  },
+  {
+    path: '/surveylist',
+    name: 'SurveyList',
+    component: SurveyList
+  },
+  {
+    path: '/writesurvey',
+    name: 'WriteSurvey',
+    component: WriteSurvey
   },
 
 ]
