@@ -14,13 +14,15 @@
     </v-col>
     <br />
     <div>
-      <ShortAnswer @addQuestion="addQuestion" />
+      <component :is="selected"
+      @addQuestion="addQuestion" @selectQuestion="changeType"/>
       <component
+        @selectQuestion="selectQuestion"
         @addQuestion="addQuestion"
         @deleteQuestion="deleteQuestion"
-        v-for="item in Questions"
+        v-for="(item, index) in Questions"
         :is="item"
-        v-bind:key="item.index"
+        v-bind:key="index"
       ></component>
     </div>
     <!-- <br />
@@ -43,23 +45,25 @@
 </template>
 <script>
 import ShortAnswer from "@/views/ShortAnswer";
-// import LongAnswer from "@/views/LongAnswer";
-// import RadioAnswer from "@/views/RadioAnswer";
-// import CheckBox from "@/views/CheckBox.vue";
-// import DropDown from "@/views/DropDown.vue";
+import LongAnswer from "@/views/LongAnswer";
+import RadioAnswer from "@/views/RadioAnswer";
+import CheckBox from "@/views/CheckBox.vue";
+import DropDown from "@/views/DropDown.vue";
 
 export default {
   data() {
     return {
       Questions: [],
+      selectedType:'',
+      selected: ShortAnswer
     };
   },
   components: {
     ShortAnswer,
-    // LongAnswer,
-    // RadioAnswer,
-    // CheckBox,
-    // DropDown,
+    LongAnswer,
+    RadioAnswer,
+    CheckBox,
+    DropDown,
   },
   methods: {
     addQuestion() {
@@ -68,6 +72,19 @@ export default {
     deleteQuestion(index) {
       this.Questions.splice(this.Questions.indexOf(index), 1);
     },
-  },
+    selectQuestion(selectedType, index) {
+     this.Questions.splice(this.Questions.indexOf(index), 1);
+     if(selectedType==='LongAnswer'){
+       this.Questions.push(LongAnswer);
+     }else if(selectedType==='RadioAnswer'){
+       this.Questions.push(RadioAnswer);
+     }else if(selectedType==='CheckBox'){
+       this.Questions.push(CheckBox);
+     }else {this.Questions.push(DropDown);}
+    },
+    changeType(selectedType){
+      this.selected = selectedType
+    }
+  }
 };
 </script>

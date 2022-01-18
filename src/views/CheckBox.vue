@@ -26,7 +26,7 @@
           <font-awesome-icon icon="image" />
         </v-btn>
         <v-spacer></v-spacer>
-        <v-select :items="items" label="Question type" dense solo></v-select>
+        <v-select @change="selectQuestion" v-model="selected" :items="items" label="Question type" dense solo></v-select>
       </v-col>
     </v-list-item>
     <buttons @deleteQuestion="deleteQuestion" @addQuestion="addQuestion" />
@@ -39,10 +39,11 @@ import buttons from "@/views/buttons";
 
 export default {
   data: () => ({
+    selected: '',
     items: [
       "ShortAnswer",
       "LongAnswer",
-      "MultipleChoice",
+      "RadioAnswer",
       "CheckBox",
       "DropDown",
     ],
@@ -55,8 +56,11 @@ export default {
       this.$emit("addQuestion");
     },
     deleteQuestion() {
-      console.log("deleteQuestion");
+      this.$emit("deleteQuestion");
     },
+    selectQuestion() {
+      this.$emit("selectQuestion", this.selected)
+    }
   },
 };
 </script>
