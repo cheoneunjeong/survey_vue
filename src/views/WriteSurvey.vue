@@ -25,22 +25,14 @@
         v-bind:key="index"
       ></component>
     </div>
-    <!-- <br />
-    <div>
-      <LongAnswer />
-    </div>
-    <br />
-    <div>
-      <RadioAnswer />
-    </div>
-    <br />
-    <div>
-      <CheckBox />
-    </div>
-    <br />
-    <div>
-      <DropDown />
-    </div> -->
+     <v-col cols="12" align="right">
+       <v-btn router :to="{ name: 'SurveyList' }">
+        <font-awesome-icon icon="backspace" />
+      </v-btn>
+      <v-btn @click="save">
+        save
+      </v-btn>
+     </v-col>
   </div>
 </template>
 <script>
@@ -84,6 +76,9 @@ export default {
     },
     changeType(selectedType){
       this.selected = selectedType
+    },
+    save() {
+      
     }
   }
 };
