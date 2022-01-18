@@ -15,14 +15,20 @@
     <br />
     <div>
       <component :is="selected"
-      @addQuestion="addQuestion" @selectQuestion="changeType"/>
+      @addQuestion="addQuestion"
+      @selectQuestion="changeType"
+      @saveQ="saveQuestion"
+      ref="getQuestion"
+      />
       <component
         @selectQuestion="selectQuestion"
         @addQuestion="addQuestion"
         @deleteQuestion="deleteQuestion"
+        @saveQ="saveQuestion"
         v-for="(item, index) in Questions"
         :is="item"
         v-bind:key="index"
+       :ref="index"
       ></component>
     </div>
      <v-col cols="12" align="right">
@@ -36,6 +42,7 @@
   </div>
 </template>
 <script>
+ //:ref="`${funcRef(index)}`" 
 import ShortAnswer from "@/views/ShortAnswer";
 import LongAnswer from "@/views/LongAnswer";
 import RadioAnswer from "@/views/RadioAnswer";
@@ -47,7 +54,9 @@ export default {
     return {
       Questions: [],
       selectedType:'',
-      selected: ShortAnswer
+      selected: ShortAnswer,
+      refs:[],
+      questionList: [],
     };
   },
   components: {
@@ -77,9 +86,29 @@ export default {
     changeType(selectedType){
       this.selected = selectedType
     },
+    funcRef(index) {
+      if(this.refs.indexOf(index) === -1){
+        this.refs.push(index)
+      }
+    },
     save() {
-      
+      //this.$refs.getQuestion.saveQ()
+      //  Object.keys(this.$refs).forEach(el => {
+      //   console.log( this.$refs[el][0] )
+      // })
+       this.$refs.getQuestion.saveQ()
+       for(let i=0; i<this.questionList.length; i++) {
+         this.$refs[i][0].saveQ()
+       }
+      // this.$refs[0][0].saveQ()
+  
+    },
+    saveQuestion(Q) {
+      this.questionList.push(Q)
+      console.log(this.questionList)
     }
+
+
   }
 };
 </script>

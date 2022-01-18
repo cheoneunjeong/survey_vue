@@ -4,7 +4,7 @@
       <v-list-item-content>
         <div class="text-overline mb-4">
           <v-col cols="12" sm="6" md="10">
-            <v-text-field label="제목없는 질문"></v-text-field>
+            <v-text-field v-model="question" label="제목없는 질문"></v-text-field>
           </v-col>
         </div>
         <v-list-item-title class="text-h5 mb-1"> </v-list-item-title>
@@ -26,6 +26,7 @@
 import buttons from "@/views/buttons";
 export default {
   data: () => ({
+    question:'',
     selected: '',
     items: [
       "ShortAnswer",
@@ -47,7 +48,7 @@ export default {
     },
     selectQuestion() {
       this.$emit("selectQuestion", this.selected)
-    }
+    },
   },
 };
 </script>
