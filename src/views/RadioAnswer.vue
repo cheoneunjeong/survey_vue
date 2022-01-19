@@ -10,20 +10,9 @@
             ></v-text-field>
           </v-col>
         </div>
-
         <v-container fluid>
-          <v-radio>
-            <template v-slot:label>
-              <v-text-field
-                style="width: 280px"
-                label="Radio Option"
-                v-model="option"
-              ></v-text-field>
-            </template>
-          </v-radio>
           <component
             @deleteOption="deleteOption"
-            @saveOption="saveOption"
             v-for="(item, index) in Options"
             :is="item"
             v-bind:key="index"
@@ -67,8 +56,8 @@ export default {
   data: () => ({
     question: "",
     selected: "",
-    option: "",
     Options: [],
+    answers: [],
     items: ["ShortAnswer", "LongAnswer", "RadioAnswer", "CheckBox", "DropDown"],
   }),
   components: {
@@ -91,18 +80,18 @@ export default {
     deleteOption(index) {
       this.Options.splice(this.Options.indexOf(index), 1);
     },
-    saveOption(answer) {
-      this.Options.push(answer);
-    },
+    // saveAnswer(answer) {
+    //   this.Options.push(answer);
+    // },
     saveQ() {
-      this.Options.push(this.option);
       for (let i = 0; i < this.Options.length; i++) {
-        this.Options.push(this.$refs[i][0].answer);
-        //this.$refs[i][0].saveOptions();
+        let a = this.$refs[i][0].answer;
+        this.answers.push(a);
       }
       let Q = {
         question: this.question,
-        Answers: this.Options,
+        answers: this.answers,
+        type: "radio",
       };
       this.$emit("saveQ", Q);
     },

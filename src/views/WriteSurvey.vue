@@ -2,6 +2,7 @@
   <div style="width: 100%">
     <v-col class="mx-auto" cols="12" sm="6">
       <v-textarea
+        v-model="title"
         label="제목없는 설문지"
         auto-grow
         outlined
@@ -10,7 +11,7 @@
         shaped
       >
       </v-textarea>
-      <v-text-field label="설문지 설명"></v-text-field>
+      <v-text-field v-model="disc" label="설문지 설명"></v-text-field>
     </v-col>
     <br />
     <div>
@@ -42,12 +43,12 @@
   </div>
 </template>
 <script>
-//:ref="`${funcRef(index)}`"
 import ShortAnswer from "@/views/ShortAnswer";
 import LongAnswer from "@/views/LongAnswer";
 import RadioAnswer from "@/views/RadioAnswer";
 import CheckBox from "@/views/CheckBox.vue";
 import DropDown from "@/views/DropDown.vue";
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -56,6 +57,8 @@ export default {
       selectedType: "",
       selected: ShortAnswer,
       questionList: [],
+      title: "",
+      disc: "",
     };
   },
   components: {
@@ -66,6 +69,8 @@ export default {
     DropDown,
   },
   methods: {
+    ...mapActions(["CreateSurvey"]),
+
     addQuestion() {
       this.Questions.push(ShortAnswer);
     },
@@ -88,20 +93,21 @@ export default {
       this.selected = selectedType;
     },
     save() {
-      //this.$refs.getQuestion.saveQ()
-      //  Object.keys(this.$refs).forEach(el => {
-      //   console.log( this.$refs[el][0] )
-      // })
-
-      // console.log(this.questionList);
       this.$refs.getQuestion.saveQ();
-      for (let i = 0; i < this.questionList.length; i++) {
+      for (let i = 0; i < this.Questions.length; i++) {
         this.$refs[i][0].saveQ();
       }
     },
     saveQuestion(Q) {
       this.questionList.push(Q);
-      console.log(this.questionList);
+      if (this.questionList.length === this.Questions.length + 1) {
+        let survey = {
+          questions: this.questionList,
+          title: this.title,
+          disc: this.disc,
+        };
+        this.CreateSurvey(survey);
+      }
     },
   },
 };

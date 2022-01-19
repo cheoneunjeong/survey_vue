@@ -1,16 +1,16 @@
 <template>
-  <v-radio>
+  <v-checkbox>
     <template v-slot:label>
       <v-col class="d-flex">
         <v-text-field
-          style="width: 280px"
-          label="Radio Option"
+          style="width: 50px"
+          label="CheckBox Option"
           v-model="answer"
         ></v-text-field>
         <v-btn @click="deleteOption" x-small>X</v-btn>
       </v-col>
     </template>
-  </v-radio>
+  </v-checkbox>
 </template>
 <script>
 export default {
@@ -24,9 +24,6 @@ export default {
     deleteOption() {
       this.$emit("deleteOption", this.index);
     },
-    // saveOptions() {
-    //   this.$emit("saveAnswer", this.answer);
-    // },
   },
 };
 </script>

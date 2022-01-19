@@ -62,6 +62,8 @@ export default {
     saveQ() {
       let Q = {
         question: this.question,
+        answers: null,
+        type: "short",
       };
       this.$emit("saveQ", Q);
     },

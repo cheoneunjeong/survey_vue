@@ -7,9 +7,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    Userinfo: {User_Id:null, User_Name:null, User_auth:[], User_token:null},
-    login_err:false,
-    login_success:false
+    Userinfo: { User_Id: null, User_Name: null, User_auth: [], User_token: null },
+    login_err: false,
+    login_success: false,
+    SurveyList: []
   },
   mutations: {
     LOGIN_USER(state, data) {
@@ -30,7 +31,7 @@ export default new Vuex.Store({
       state.login_err = false
       state.login_success = false
       localStorage.removeItem("token")
-      console.log("로그아웃?"+localStorage.getItem("token"))
+      console.log("로그아웃?" + localStorage.getItem("token"))
       Route.push("/")
     },
     INSERT_TOKEN(state) {
@@ -43,45 +44,48 @@ export default new Vuex.Store({
 
       state.login_success = true
       state.login_err = false
+    },
+    GET_SURVEYLIST(state, data) {
+      state.SurveyList = data
     }
   },
   actions: {
 
-    LoginUser({commit}, payload) {
-      return new Promise((resolve, reject) => 
-      axios.post('http://localhost:9010/api/public/signin', payload)
-        .then(Response => {
-          console.log(Response.data)
-          if(Response.data.username != null) {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${Response.data.token}`
-            localStorage.setItem("token", Response.data.token)
-            commit('LOGIN_USER', Response.data)
-          }
-        })
-        .catch(Error => {
-          console.log('login_error')
-          reject(Error)
-          alert("아이디와 비밀번호를 확인해주세요.")
-        })
+    LoginUser({ commit }, payload) {
+      return new Promise((resolve, reject) =>
+        axios.post('http://localhost:9010/api/public/signin', payload)
+          .then(Response => {
+            console.log(Response.data)
+            if (Response.data.username != null) {
+              axios.defaults.headers.common['Authorization'] = `Bearer ${Response.data.token}`
+              localStorage.setItem("token", Response.data.token)
+              commit('LOGIN_USER', Response.data)
+            }
+          })
+          .catch(Error => {
+            console.log('login_error')
+            reject(Error)
+            alert("아이디와 비밀번호를 확인해주세요.")
+          })
       )
     },
-    NewUsers({commit}, payload) {
+    NewUsers({ commit }, payload) {
       return new Promise((resolve, reject) => {
         axios.post('http://localhost:9010/api/public/signup', payload)
-        .then(Response => {
-          if(Response.data === "success") {
-            Route.push("/login")
-          }
-        })
-        .catch(Error => {
-          console.log('newuser-error')
-          reject(Error)
-          alert("중복된 아이디가 있습니다.")
-          Route.push("/signup")
-        })
+          .then(Response => {
+            if (Response.data === "success") {
+              Route.push("/login")
+            }
+          })
+          .catch(Error => {
+            console.log('newuser-error')
+            reject(Error)
+            alert("중복된 아이디가 있습니다.")
+            Route.push("/signup")
+          })
       })
     },
-    UnpackToken({commit}) {
+    UnpackToken({ commit }) {
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`
         axios.get('http://localhost:9010/api/public/unpackToken')
@@ -95,7 +99,31 @@ export default new Vuex.Store({
           })
       })
     },
-
+    CreateSurvey({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        console.log(payload)
+        // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`
+        // axios.post('http://localhost:9010/api/auth/survey')
+        //   .then(Response => {
+        //     commit('GET_SURVEYLIST', Response.data)
+        //   })
+        //   .catch(Error => {
+        //     reject(Error)
+        //     console.log('CreateSurvey_error')
+        //   })
+      })
+    },
+    getSurveyList({ commit }) {
+      return new Promise((resolve, reject) => {
+        axios.get('http://localhost:9010/api/public/surveylist')
+          .then(Response => {
+            commit('GET_SURVEYLIST', Response.data)
+          })
+          .catch(Error => {
+            console.log('getSurveyList_error')
+          })
+      })
+    }
   },
   modules: {
   }

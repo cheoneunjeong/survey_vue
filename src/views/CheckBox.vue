@@ -11,13 +11,16 @@
           </v-col>
         </div>
         <v-container fluid>
-          <v-checkbox>
-            <template v-slot:label>
-              <v-text-field label="CheckBox Option"></v-text-field>
-            </template>
-          </v-checkbox>
+          <component
+            @deleteOption="deleteOption"
+            v-for="(item, index) in Options"
+            :is="item"
+            v-bind:key="index"
+            :ref="index"
+            :index="index"
+          ></component>
           <v-col>
-            <v-btn rounded text>
+            <v-btn rounded text @click="addOption">
               <font-awesome-icon icon="plus-circle" />
               옵션 추가
             </v-btn>
@@ -46,16 +49,20 @@
 
 <script>
 import buttons from "@/views/buttons";
+import checkOption from "@/views/checkOption";
 
 export default {
   props: ["index"],
   data: () => ({
     question: "",
     selected: "",
+    Options: [],
+    answers: [],
     items: ["ShortAnswer", "LongAnswer", "RadioAnswer", "CheckBox", "DropDown"],
   }),
   components: {
     buttons,
+    checkOption,
   },
   methods: {
     addQuestion() {
@@ -66,6 +73,24 @@ export default {
     },
     selectQuestion() {
       this.$emit("selectQuestion", this.selected);
+    },
+    addOption() {
+      this.Options.push(checkOption);
+    },
+    deleteOption(index) {
+      this.Options.splice(index, 1);
+    },
+    saveQ() {
+      for (let i = 0; i < this.Options.length; i++) {
+        let a = this.$refs[i][0].answer;
+        this.answers.push(a);
+      }
+      let Q = {
+        question: this.question,
+        answers: this.answers,
+        type: "check",
+      };
+      this.$emit("saveQ", Q);
     },
   },
 };
