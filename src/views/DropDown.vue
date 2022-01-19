@@ -4,7 +4,10 @@
       <v-list-item-content>
         <div>
           <v-col cols="12" sm="6" md="10">
-            <v-text-field v-model="question" label="제목없는 질문"></v-text-field>
+            <v-text-field
+              v-model="question"
+              label="제목없는 질문"
+            ></v-text-field>
           </v-col>
         </div>
         <v-container fluid>
@@ -24,7 +27,14 @@
           <font-awesome-icon icon="image" />
         </v-btn>
         <v-spacer></v-spacer>
-        <v-select @change="selectQuestion" v-model="selected" :items="items" label="Question type" dense solo></v-select>
+        <v-select
+          @change="selectQuestion"
+          v-model="selected"
+          :items="items"
+          label="Question type"
+          dense
+          solo
+        ></v-select>
       </v-col>
     </v-list-item>
     <buttons @deleteQuestion="deleteQuestion" @addQuestion="addQuestion" />
@@ -36,16 +46,11 @@
 import buttons from "@/views/buttons";
 
 export default {
+  props: ["index"],
   data: () => ({
-    question:'',
-    selected: '',
-    items: [
-      "ShortAnswer",
-      "LongAnswer",
-      "RadioAnswer",
-      "CheckBox",
-      "DropDown",
-    ],
+    question: "",
+    selected: "",
+    items: ["ShortAnswer", "LongAnswer", "RadioAnswer", "CheckBox", "DropDown"],
   }),
   components: {
     buttons,
@@ -55,10 +60,10 @@ export default {
       this.$emit("addQuestion");
     },
     deleteQuestion() {
-      this.$emit("deleteQuestion");
+      this.$emit("deleteQuestion", this.index);
     },
     selectQuestion() {
-      this.$emit("selectQuestion", this.selected)
+      this.$emit("selectQuestion", this.selected);
     },
   },
 };

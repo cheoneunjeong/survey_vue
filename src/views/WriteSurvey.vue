@@ -14,11 +14,12 @@
     </v-col>
     <br />
     <div>
-      <component :is="selected"
-      @addQuestion="addQuestion"
-      @selectQuestion="changeType"
-      @saveQ="saveQuestion"
-      ref="getQuestion"
+      <component
+        :is="selected"
+        @addQuestion="addQuestion"
+        @selectQuestion="changeType"
+        @saveQ="saveQuestion"
+        ref="getQuestion"
       />
       <component
         @selectQuestion="selectQuestion"
@@ -28,21 +29,20 @@
         v-for="(item, index) in Questions"
         :is="item"
         v-bind:key="index"
-       :ref="index"
+        :ref="index"
+        :index="index"
       ></component>
     </div>
-     <v-col cols="12" align="right">
-       <v-btn router :to="{ name: 'SurveyList' }">
+    <v-col cols="12" align="right">
+      <v-btn router :to="{ name: 'SurveyList' }">
         <font-awesome-icon icon="backspace" />
       </v-btn>
-      <v-btn @click="save">
-        save
-      </v-btn>
-     </v-col>
+      <v-btn @click="save"> save </v-btn>
+    </v-col>
   </div>
 </template>
 <script>
- //:ref="`${funcRef(index)}`" 
+//:ref="`${funcRef(index)}`"
 import ShortAnswer from "@/views/ShortAnswer";
 import LongAnswer from "@/views/LongAnswer";
 import RadioAnswer from "@/views/RadioAnswer";
@@ -53,9 +53,8 @@ export default {
   data() {
     return {
       Questions: [],
-      selectedType:'',
+      selectedType: "",
       selected: ShortAnswer,
-      refs:[],
       questionList: [],
     };
   },
@@ -70,45 +69,40 @@ export default {
     addQuestion() {
       this.Questions.push(ShortAnswer);
     },
-    deleteQuestion(index) {
-      this.Questions.splice(this.Questions.indexOf(index), 1);
+    deleteQuestion(num) {
+      this.Questions.splice(this.Questions.indexOf(num), 1);
     },
     selectQuestion(selectedType, index) {
-     this.Questions.splice(this.Questions.indexOf(index), 1);
-     if(selectedType==='LongAnswer'){
-       this.Questions.push(LongAnswer);
-     }else if(selectedType==='RadioAnswer'){
-       this.Questions.push(RadioAnswer);
-     }else if(selectedType==='CheckBox'){
-       this.Questions.push(CheckBox);
-     }else {this.Questions.push(DropDown);}
-    },
-    changeType(selectedType){
-      this.selected = selectedType
-    },
-    funcRef(index) {
-      if(this.refs.indexOf(index) === -1){
-        this.refs.push(index)
+      this.Questions.splice(this.Questions.indexOf(index), 1);
+      if (selectedType === "LongAnswer") {
+        this.Questions.push(LongAnswer);
+      } else if (selectedType === "RadioAnswer") {
+        this.Questions.push(RadioAnswer);
+      } else if (selectedType === "CheckBox") {
+        this.Questions.push(CheckBox);
+      } else {
+        this.Questions.push(DropDown);
       }
+    },
+    changeType(selectedType) {
+      this.selected = selectedType;
     },
     save() {
       //this.$refs.getQuestion.saveQ()
       //  Object.keys(this.$refs).forEach(el => {
       //   console.log( this.$refs[el][0] )
       // })
-       this.$refs.getQuestion.saveQ()
-       for(let i=0; i<this.questionList.length; i++) {
-         this.$refs[i][0].saveQ()
-       }
-      // this.$refs[0][0].saveQ()
-  
+
+      // console.log(this.questionList);
+      this.$refs.getQuestion.saveQ();
+      for (let i = 0; i < this.questionList.length; i++) {
+        this.$refs[i][0].saveQ();
+      }
     },
     saveQuestion(Q) {
-      this.questionList.push(Q)
-      console.log(this.questionList)
-    }
-
-
-  }
+      this.questionList.push(Q);
+      console.log(this.questionList);
+    },
+  },
 };
 </script>
