@@ -48,7 +48,7 @@ import LongAnswer from "@/views/LongAnswer";
 import RadioAnswer from "@/views/RadioAnswer";
 import CheckBox from "@/views/CheckBox.vue";
 import DropDown from "@/views/DropDown.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   data() {
@@ -110,5 +110,6 @@ export default {
       }
     },
   },
+  created() {},
 };
 </script>

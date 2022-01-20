@@ -8,6 +8,7 @@
           v-model="answer"
         ></v-text-field>
         <v-btn @click="deleteOption" x-small>X</v-btn>
+        {{ answer }}
       </v-col>
     </template>
   </v-checkbox>
@@ -16,14 +17,25 @@
 export default {
   props: ["index"],
   data() {
-    return {
-      answer: "",
-    };
+    return {};
+  },
+  computed: {
+    answer: {
+      get() {
+        return this.$store.state.answer;
+      },
+      set(value) {
+        this.$store.commit("updateMessage", value);
+      },
+    },
   },
   methods: {
     deleteOption() {
       this.$emit("deleteOption", this.index);
     },
+  },
+  created() {
+    this.$store.state.Question.answers.push({});
   },
 };
 </script>

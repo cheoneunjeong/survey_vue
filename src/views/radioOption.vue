@@ -28,5 +28,6 @@ export default {
     //   this.$emit("saveAnswer", this.answer);
     // },
   },
+  created() {},
 };
 </script>

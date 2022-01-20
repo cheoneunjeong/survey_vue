@@ -43,6 +43,7 @@
       </v-col>
     </v-list-item>
     <buttons @deleteQuestion="deleteQuestion" @addQuestion="addQuestion" />
+    <v-btn @click="get"></v-btn>
   </v-card>
 </template>
 
@@ -91,6 +92,9 @@ export default {
         type: "check",
       };
       this.$emit("saveQ", Q);
+    },
+    get() {
+      console.log(this.$store.answer);
     },
   },
 };

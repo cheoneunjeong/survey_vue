@@ -6,6 +6,7 @@
           <v-col cols="12" sm="6" md="10">
             <v-text-field
               v-model="question"
+              @change="setQuestion"
               label="제목없는 질문"
             ></v-text-field>
           </v-col>
@@ -29,6 +30,7 @@
       </v-col>
     </v-list-item>
     <buttons @deleteQuestion="deleteQuestion" @addQuestion="addQuestion" />
+    <v-btn @click="get">v</v-btn>
   </v-card>
 </template>
 
@@ -40,13 +42,15 @@ export default {
   name: "ShortAnswer",
   props: ["index"],
   data: () => ({
-    selected: "",
+    Question: "",
     question: "",
+    selected: "",
     items: ["ShortAnswer", "LongAnswer", "RadioAnswer", "CheckBox", "DropDown"],
   }),
   components: {
     buttons,
   },
+  computed: {},
   methods: {
     addQuestion() {
       this.$emit("addQuestion");
@@ -67,6 +71,13 @@ export default {
       };
       this.$emit("saveQ", Q);
     },
+    setQuestion() {},
+    get() {
+      console.log(this.$store.state.Survey);
+    },
+  },
+  created() {
+    this.$store.state.Survey.questions.push(this.question);
   },
 };
 </script>
