@@ -5,7 +5,7 @@
         <div class="text-overline mb-4">
           <v-col cols="12" sm="6" md="10">
             <v-text-field
-              v-model="question"
+              v-model="q"
               @change="setQuestion"
               label="제목없는 질문"
             ></v-text-field>
@@ -42,15 +42,24 @@ export default {
   name: "ShortAnswer",
   props: ["index"],
   data: () => ({
-    Question: "",
     question: "",
+    Question: "",
     selected: "",
     items: ["ShortAnswer", "LongAnswer", "RadioAnswer", "CheckBox", "DropDown"],
   }),
+  computed: {
+    q: {
+      get() {
+        return this.$store.state.Survey.questions.question;
+      },
+      set(value) {
+        this.$store.commit("updateQuestion", value);
+      },
+    },
+  },
   components: {
     buttons,
   },
-  computed: {},
   methods: {
     addQuestion() {
       this.$emit("addQuestion");
@@ -73,11 +82,11 @@ export default {
     },
     setQuestion() {},
     get() {
-      console.log(this.$store.state.Survey);
+      console.log(this.$store.state);
     },
   },
-  created() {
-    this.$store.state.Survey.questions.push(this.question);
-  },
+  // created() {
+  //   this.$store.state.Survey.questions.push({ question: "", answers: [] });
+  // },
 };
 </script>

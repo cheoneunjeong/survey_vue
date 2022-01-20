@@ -8,7 +8,6 @@
           v-model="answer"
         ></v-text-field>
         <v-btn @click="deleteOption" x-small>X</v-btn>
-        {{ answer }}
       </v-col>
     </template>
   </v-checkbox>
@@ -22,7 +21,7 @@ export default {
   computed: {
     answer: {
       get() {
-        return this.$store.state.answer;
+        return this.$store.state.Survey.questions.answer;
       },
       set(value) {
         this.$store.commit("updateMessage", value);
@@ -35,7 +34,7 @@ export default {
     },
   },
   created() {
-    this.$store.state.Question.answers.push({});
+    //  this.$store.state.Survey.questions.answers.push({ answer: {} });
   },
 };
 </script>

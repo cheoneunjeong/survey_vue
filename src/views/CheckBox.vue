@@ -55,12 +55,21 @@ import checkOption from "@/views/checkOption";
 export default {
   props: ["index"],
   data: () => ({
-    question: "",
     selected: "",
     Options: [],
     answers: [],
     items: ["ShortAnswer", "LongAnswer", "RadioAnswer", "CheckBox", "DropDown"],
   }),
+  computed: {
+    question: {
+      get() {
+        return this.$store.state.Survey.questions.q;
+      },
+      set(value) {
+        this.$store.commit("updateQuestion", value);
+      },
+    },
+  },
   components: {
     buttons,
     checkOption,
@@ -94,8 +103,11 @@ export default {
       this.$emit("saveQ", Q);
     },
     get() {
-      console.log(this.$store.answer);
+      console.log(this.$store.state);
     },
+  },
+  created() {
+    this.$store.state.Survey.questions.push({ q: {}, answers: [] });
   },
 };
 </script>

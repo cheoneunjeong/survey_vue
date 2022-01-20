@@ -12,9 +12,6 @@ export default new Vuex.Store({
     login_success: false,
     SurveyList: [],
     Survey: { title: '', disc: '', questions: [] },
-    Question: { question: '', answers: [] },
-    answer: {}
-
   },
   mutations: {
     LOGIN_USER(state, data) {
@@ -53,9 +50,10 @@ export default new Vuex.Store({
       state.SurveyList = data
     },
     updateMessage(state, data) {
-      console.log('mutation')
-      console.log(data)
-      state.answer = data
+      state.Survey.questions.answers.answer = data
+    },
+    updateQuestion(state, data) {
+      state.Survey.questions.q = data
     }
   },
   actions: {
