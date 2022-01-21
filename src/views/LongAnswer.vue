@@ -36,11 +36,29 @@
 import buttons from "@/views/buttons";
 export default {
   props: ["index"],
-  data: () => ({
-    question: "",
-    selected: "",
-    items: ["ShortAnswer", "LongAnswer", "RadioAnswer", "CheckBox", "DropDown"],
-  }),
+  data() {
+    return {
+      selected: "",
+      items: [
+        "ShortAnswer",
+        "LongAnswer",
+        "RadioAnswer",
+        "CheckBox",
+        "DropDown",
+      ],
+    };
+  },
+  computed: {
+    question: {
+      get() {
+        return this.$store.state.Survey.questions[this.index].q;
+      },
+      set(value) {
+        let data = { value: value, index: this.index };
+        this.$store.commit("updateQuestion", data);
+      },
+    },
+  },
   components: {
     buttons,
   },
@@ -52,15 +70,7 @@ export default {
       this.$emit("deleteQuestion", this.index);
     },
     selectQuestion() {
-      this.$emit("selectQuestion", this.selected);
-    },
-    saveQ() {
-      let Q = {
-        question: this.question,
-        answers: null,
-        type: "long",
-      };
-      this.$emit("saveQ", Q);
+      this.$emit("selectQuestion", this.selected, this.index);
     },
   },
 };

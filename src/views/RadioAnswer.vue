@@ -9,16 +9,17 @@
               label="제목없는 질문"
             ></v-text-field>
           </v-col>
+          <v-list-item-title class="text-h5 mb-1"> </v-list-item-title>
+          <v-list-item-subtitle>객관형 텍스트 질문입니다.</v-list-item-subtitle>
         </div>
         <v-container fluid>
-          <component
+          <raidoOption
             @deleteOption="deleteOption"
+            :qindex="qindex"
             v-for="(item, index) in Options"
-            :is="item"
-            v-bind:key="index"
-            :ref="index"
+            :key="index"
             :index="index"
-          ></component>
+          />
           <v-col>
             <v-btn rounded text @click="addOption">
               <font-awesome-icon icon="plus-circle" />
@@ -53,13 +54,31 @@ import raidoOption from "@/views/radioOption";
 
 export default {
   props: ["index"],
-  data: () => ({
-    question: "",
-    selected: "",
-    Options: [],
-    answers: [],
-    items: ["ShortAnswer", "LongAnswer", "RadioAnswer", "CheckBox", "DropDown"],
-  }),
+  data() {
+    return {
+      qindex: this.index,
+      Options: [],
+      selected: "",
+      items: [
+        "ShortAnswer",
+        "LongAnswer",
+        "RadioAnswer",
+        "CheckBox",
+        "DropDown",
+      ],
+    };
+  },
+  computed: {
+    question: {
+      get() {
+        return this.$store.state.Survey.questions[this.index].q;
+      },
+      set(value) {
+        let data = { value: value, index: this.index };
+        this.$store.commit("updateQuestion", data);
+      },
+    },
+  },
   components: {
     buttons,
     raidoOption,
@@ -72,28 +91,15 @@ export default {
       this.$emit("deleteQuestion", this.index);
     },
     selectQuestion() {
-      this.$emit("selectQuestion", this.selected);
+      this.$emit("selectQuestion", this.selected, this.index);
     },
     addOption() {
       this.Options.push(raidoOption);
     },
     deleteOption(index) {
-      this.Options.splice(this.Options.indexOf(index), 1);
-    },
-    // saveAnswer(answer) {
-    //   this.Options.push(answer);
-    // },
-    saveQ() {
-      for (let i = 0; i < this.Options.length; i++) {
-        let a = this.$refs[i][0].answer;
-        this.answers.push(a);
-      }
-      let Q = {
-        question: this.question,
-        answers: this.answers,
-        type: "radio",
-      };
-      this.$emit("saveQ", Q);
+      console.log(index);
+      this.$store.state.Survey.questions[this.index].answers.splice(index, 1);
+      this.Options.splice(index, 1);
     },
   },
 };

@@ -8,17 +8,19 @@
               v-model="question"
               label="제목없는 질문"
             ></v-text-field>
+            <v-list-item-title class="text-h5 mb-1"> </v-list-item-title>
+            <v-list-item-subtitle
+              >체크박스 텍스트 질문입니다.</v-list-item-subtitle
+            >
           </v-col>
         </div>
         <v-container fluid>
-          <component
-            @deleteOption="deleteOption"
+          <checkOption
+            :qindex="qindex"
             v-for="(item, index) in Options"
-            :is="item"
-            v-bind:key="index"
-            :ref="index"
+            :key="index"
             :index="index"
-          ></component>
+          />
           <v-col>
             <v-btn rounded text @click="addOption">
               <font-awesome-icon icon="plus-circle" />
@@ -43,7 +45,6 @@
       </v-col>
     </v-list-item>
     <buttons @deleteQuestion="deleteQuestion" @addQuestion="addQuestion" />
-    <v-btn @click="get"></v-btn>
   </v-card>
 </template>
 
@@ -54,19 +55,28 @@ import checkOption from "@/views/checkOption";
 
 export default {
   props: ["index"],
-  data: () => ({
-    selected: "",
-    Options: [],
-    answers: [],
-    items: ["ShortAnswer", "LongAnswer", "RadioAnswer", "CheckBox", "DropDown"],
-  }),
+  data() {
+    return {
+      qindex: this.index,
+      selected: "",
+      Options: [],
+      items: [
+        "ShortAnswer",
+        "LongAnswer",
+        "RadioAnswer",
+        "CheckBox",
+        "DropDown",
+      ],
+    };
+  },
   computed: {
     question: {
       get() {
-        return this.$store.state.Survey.questions.q;
+        return this.$store.state.Survey.questions[this.index].q;
       },
       set(value) {
-        this.$store.commit("updateQuestion", value);
+        let data = { value: value, index: this.index };
+        this.$store.commit("updateQuestion", data);
       },
     },
   },
@@ -82,7 +92,7 @@ export default {
       this.$emit("deleteQuestion", this.index);
     },
     selectQuestion() {
-      this.$emit("selectQuestion", this.selected);
+      this.$emit("selectQuestion", this.selected, this.index);
     },
     addOption() {
       this.Options.push(checkOption);
@@ -90,24 +100,6 @@ export default {
     deleteOption(index) {
       this.Options.splice(index, 1);
     },
-    saveQ() {
-      for (let i = 0; i < this.Options.length; i++) {
-        let a = this.$refs[i][0].answer;
-        this.answers.push(a);
-      }
-      let Q = {
-        question: this.question,
-        answers: this.answers,
-        type: "check",
-      };
-      this.$emit("saveQ", Q);
-    },
-    get() {
-      console.log(this.$store.state);
-    },
-  },
-  created() {
-    this.$store.state.Survey.questions.push({ q: {}, answers: [] });
   },
 };
 </script>

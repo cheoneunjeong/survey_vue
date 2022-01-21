@@ -49,12 +49,12 @@ export default new Vuex.Store({
     GET_SURVEYLIST(state, data) {
       state.SurveyList = data
     },
-    updateMessage(state, data) {
-      state.Survey.questions.answers.answer = data
+    updateAnswer(state, data) {
+      state.Survey.questions[data.qindex].answers[data.index].answer = data.value
     },
     updateQuestion(state, data) {
-      state.Survey.questions.q = data
-    }
+      state.Survey.questions[data.index].q = data.value
+    },
   },
   actions: {
 

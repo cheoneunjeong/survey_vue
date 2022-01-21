@@ -16,21 +16,12 @@
     <br />
     <div>
       <component
-        :is="selected"
-        @addQuestion="addQuestion"
-        @selectQuestion="changeType"
-        @saveQ="saveQuestion"
-        ref="getQuestion"
-      />
-      <component
         @selectQuestion="selectQuestion"
         @addQuestion="addQuestion"
         @deleteQuestion="deleteQuestion"
-        @saveQ="saveQuestion"
         v-for="(item, index) in Questions"
         :is="item"
         v-bind:key="index"
-        :ref="index"
         :index="index"
       ></component>
     </div>
@@ -38,7 +29,7 @@
       <v-btn router :to="{ name: 'SurveyList' }">
         <font-awesome-icon icon="backspace" />
       </v-btn>
-      <v-btn @click="save"> save </v-btn>
+      <v-btn> save </v-btn>
     </v-col>
   </div>
 </template>
@@ -56,7 +47,6 @@ export default {
       Questions: [],
       selectedType: "",
       selected: ShortAnswer,
-      questionList: [],
       title: "",
       disc: "",
     };
@@ -72,44 +62,34 @@ export default {
     ...mapActions(["CreateSurvey"]),
 
     addQuestion() {
+      this.$store.state.Survey.questions.push({ q: {}, answers: [] });
       this.Questions.push(ShortAnswer);
     },
     deleteQuestion(num) {
-      this.Questions.splice(this.Questions.indexOf(num), 1);
+      this.Questions.splice(num, 1);
+      this.$store.state.Survey.questions.splice(num, 1);
     },
-    selectQuestion(selectedType, index) {
-      this.Questions.splice(this.Questions.indexOf(index), 1);
-      if (selectedType === "LongAnswer") {
-        this.Questions.push(LongAnswer);
-      } else if (selectedType === "RadioAnswer") {
-        this.Questions.push(RadioAnswer);
-      } else if (selectedType === "CheckBox") {
-        this.Questions.push(CheckBox);
+    selectQuestion(selected, index) {
+      this.$store.state.Survey.questions.splice(index, 1, {
+        q: {},
+        answers: [],
+      });
+      if (selected === "LongAnswer") {
+        this.Questions.splice(index, 1, LongAnswer);
+      } else if (selected === "RadioAnswer") {
+        this.Questions.splice(index, 1, RadioAnswer);
+      } else if (selected === "CheckBox") {
+        this.Questions.splice(index, 1, CheckBox);
+      } else if (selected === "ShortAnswer") {
+        this.Questions.splice(index, 1, ShortAnswer);
       } else {
-        this.Questions.push(DropDown);
-      }
-    },
-    changeType(selectedType) {
-      this.selected = selectedType;
-    },
-    save() {
-      this.$refs.getQuestion.saveQ();
-      for (let i = 0; i < this.Questions.length; i++) {
-        this.$refs[i][0].saveQ();
-      }
-    },
-    saveQuestion(Q) {
-      this.questionList.push(Q);
-      if (this.questionList.length === this.Questions.length + 1) {
-        let survey = {
-          questions: this.questionList,
-          title: this.title,
-          disc: this.disc,
-        };
-        this.CreateSurvey(survey);
+        this.Questions.splice(index, 1, DropDown);
       }
     },
   },
-  created() {},
+  created() {
+    this.$store.state.Survey.questions.push({ q: {}, answers: [] });
+    this.Questions.push(ShortAnswer);
+  },
 };
 </script>

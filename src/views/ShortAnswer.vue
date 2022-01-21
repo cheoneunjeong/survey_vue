@@ -5,8 +5,7 @@
         <div class="text-overline mb-4">
           <v-col cols="12" sm="6" md="10">
             <v-text-field
-              v-model="q"
-              @change="setQuestion"
+              v-model="question"
               label="제목없는 질문"
             ></v-text-field>
           </v-col>
@@ -30,7 +29,7 @@
       </v-col>
     </v-list-item>
     <buttons @deleteQuestion="deleteQuestion" @addQuestion="addQuestion" />
-    <v-btn @click="get">v</v-btn>
+    <v-btn @click="get">test</v-btn>
   </v-card>
 </template>
 
@@ -41,19 +40,26 @@ import buttons from "@/views/buttons";
 export default {
   name: "ShortAnswer",
   props: ["index"],
-  data: () => ({
-    question: "",
-    Question: "",
-    selected: "",
-    items: ["ShortAnswer", "LongAnswer", "RadioAnswer", "CheckBox", "DropDown"],
-  }),
+  data() {
+    return {
+      selected: "",
+      items: [
+        "ShortAnswer",
+        "LongAnswer",
+        "RadioAnswer",
+        "CheckBox",
+        "DropDown",
+      ],
+    };
+  },
   computed: {
-    q: {
+    question: {
       get() {
-        return this.$store.state.Survey.questions.question;
+        return this.$store.state.Survey.questions[this.index].q;
       },
       set(value) {
-        this.$store.commit("updateQuestion", value);
+        let data = { value: value, index: this.index };
+        this.$store.commit("updateQuestion", data);
       },
     },
   },
@@ -65,28 +71,15 @@ export default {
       this.$emit("addQuestion");
     },
     deleteQuestion() {
-      console.log(this.index);
-      // this.question = null;
+      console.log("질문" + this.index);
       this.$emit("deleteQuestion", this.index);
     },
     selectQuestion() {
-      this.$emit("selectQuestion", this.selected);
+      this.$emit("selectQuestion", this.selected, this.index);
     },
-    saveQ() {
-      let Q = {
-        question: this.question,
-        answers: null,
-        type: "short",
-      };
-      this.$emit("saveQ", Q);
-    },
-    setQuestion() {},
     get() {
       console.log(this.$store.state);
     },
   },
-  // created() {
-  //   this.$store.state.Survey.questions.push({ question: "", answers: [] });
-  // },
 };
 </script>

@@ -64,14 +64,14 @@ export default {
   methods: {
     ...mapMutations(["Logout"]),
   },
-  created() {
-    if (
-      this.Userinfo.User_token === null &&
-      localStorage.getItem("token") !== null
-    ) {
-      this.$store.commit("INSERT_TOKEN"), this.$store.dispatch("UnpackToken");
-      console.log("tttttt" + localStorage.getItem("token"));
-    }
-  },
+  // created() {
+  //   if (
+  //     this.Userinfo.User_token === null &&
+  //     localStorage.getItem("token") !== null
+  //   ) {
+  //     this.$store.commit("INSERT_TOKEN"), this.$store.dispatch("UnpackToken");
+  //     console.log("tttttt" + localStorage.getItem("token"));
+  //   }
+  // },
 };
 </script>

@@ -14,17 +14,20 @@
 </template>
 <script>
 export default {
-  props: ["index"],
+  props: ["index", "qindex"],
   data() {
     return {};
   },
   computed: {
     answer: {
       get() {
-        return this.$store.state.Survey.questions.answer;
+        return this.$store.state.Survey.questions[this.qindex].answers[
+          this.index
+        ].answer;
       },
       set(value) {
-        this.$store.commit("updateMessage", value);
+        let data = { value: value, index: this.index, qindex: this.qindex };
+        this.$store.commit("updateAnswer", data);
       },
     },
   },
@@ -34,7 +37,9 @@ export default {
     },
   },
   created() {
-    //  this.$store.state.Survey.questions.answers.push({ answer: {} });
+    this.$store.state.Survey.questions[this.qindex].answers.push({
+      answer: {},
+    });
   },
 };
 </script>
