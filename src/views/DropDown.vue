@@ -59,7 +59,6 @@ export default {
     return {
       qindex: this.index,
       selected: "",
-      Options: [],
       items: [
         "ShortAnswer",
         "LongAnswer",
@@ -79,6 +78,15 @@ export default {
         this.$store.commit("updateQuestion", data);
       },
     },
+    Options: {
+      get() {
+        return this.$store.state.Survey.questions[this.index].answers;
+      },
+      set(value) {
+        let data = { value: value, index: this.index };
+        this.$store.commit("updateOptions", data);
+      },
+    },
   },
   components: {
     buttons,
@@ -95,10 +103,9 @@ export default {
       this.$emit("selectQuestion", this.selected, this.index);
     },
     addOption() {
-      this.Options.push(drop);
-    },
-    deleteOption(index) {
-      this.Options.splice(index, 1);
+      this.$store.state.Survey.questions[this.qindex].answers.push({
+        answer: {},
+      });
     },
   },
 };

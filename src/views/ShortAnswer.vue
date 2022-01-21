@@ -71,7 +71,6 @@ export default {
       this.$emit("addQuestion");
     },
     deleteQuestion() {
-      console.log("질문" + this.index);
       this.$emit("deleteQuestion", this.index);
     },
     selectQuestion() {

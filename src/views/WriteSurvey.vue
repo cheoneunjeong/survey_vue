@@ -47,9 +47,25 @@ export default {
       Questions: [],
       selectedType: "",
       selected: ShortAnswer,
-      title: "",
-      disc: "",
     };
+  },
+  computed: {
+    title: {
+      get() {
+        return this.$store.state.Survey.title;
+      },
+      set(value) {
+        this.$store.commit("updateTitle", value);
+      },
+    },
+    disc: {
+      get() {
+        return this.$store.state.Survey.disc;
+      },
+      set(value) {
+        this.$store.commit("updateDisc", value);
+      },
+    },
   },
   components: {
     ShortAnswer,

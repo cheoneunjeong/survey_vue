@@ -15,9 +15,6 @@
 <script>
 export default {
   props: ["index", "qindex"],
-  data() {
-    return {};
-  },
   computed: {
     answer: {
       get() {
@@ -33,14 +30,11 @@ export default {
   },
   methods: {
     deleteOption() {
-      console.log("여긴 옵션" + this.index);
-      this.$emit("deleteOption", this.index);
+      this.$store.state.Survey.questions[this.qindex].answers.splice(
+        this.index,
+        1
+      );
     },
-  },
-  created() {
-    this.$store.state.Survey.questions[this.qindex].answers.push({
-      answer: {},
-    });
   },
 };
 </script>

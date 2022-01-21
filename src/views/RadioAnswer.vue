@@ -14,7 +14,6 @@
         </div>
         <v-container fluid>
           <raidoOption
-            @deleteOption="deleteOption"
             :qindex="qindex"
             v-for="(item, index) in Options"
             :key="index"
@@ -57,7 +56,6 @@ export default {
   data() {
     return {
       qindex: this.index,
-      Options: [],
       selected: "",
       items: [
         "ShortAnswer",
@@ -78,6 +76,15 @@ export default {
         this.$store.commit("updateQuestion", data);
       },
     },
+    Options: {
+      get() {
+        return this.$store.state.Survey.questions[this.index].answers;
+      },
+      set(value) {
+        let data = { value: value, index: this.index };
+        this.$store.commit("updateOptions", data);
+      },
+    },
   },
   components: {
     buttons,
@@ -94,12 +101,9 @@ export default {
       this.$emit("selectQuestion", this.selected, this.index);
     },
     addOption() {
-      this.Options.push(raidoOption);
-    },
-    deleteOption(index) {
-      console.log(index);
-      this.$store.state.Survey.questions[this.index].answers.splice(index, 1);
-      this.Options.splice(index, 1);
+      this.$store.state.Survey.questions[this.qindex].answers.push({
+        answer: {},
+      });
     },
   },
 };

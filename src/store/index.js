@@ -55,6 +55,16 @@ export default new Vuex.Store({
     updateQuestion(state, data) {
       state.Survey.questions[data.index].q = data.value
     },
+    updateTitle(state, data) {
+      state.Survey.title = data
+    },
+    updateDisc(state, data) {
+      state.Survey.disc = data
+    },
+    updateOptions(state, data) {
+      state.Survey.questions[data.index].answers = data.value
+    },
+
   },
   actions: {
 
