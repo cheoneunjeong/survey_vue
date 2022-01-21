@@ -29,7 +29,6 @@
       </v-col>
     </v-list-item>
     <buttons @deleteQuestion="deleteQuestion" @addQuestion="addQuestion" />
-    <v-btn @click="get">test</v-btn>
   </v-card>
 </template>
 
@@ -55,6 +54,7 @@ export default {
   computed: {
     question: {
       get() {
+        this.$store.state.Survey.questions[this.index].t = "ShortAnswer";
         return this.$store.state.Survey.questions[this.index].q;
       },
       set(value) {
@@ -75,9 +75,6 @@ export default {
     },
     selectQuestion() {
       this.$emit("selectQuestion", this.selected, this.index);
-    },
-    get() {
-      console.log(this.$store.state);
     },
   },
 };

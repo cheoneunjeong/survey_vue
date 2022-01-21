@@ -71,6 +71,7 @@ export default {
   computed: {
     question: {
       get() {
+        this.$store.state.Survey.questions[this.index].t = "CheckBox";
         return this.$store.state.Survey.questions[this.index].q;
       },
       set(value) {

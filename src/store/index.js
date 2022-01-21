@@ -116,18 +116,18 @@ export default new Vuex.Store({
           })
       })
     },
-    CreateSurvey({ commit }, payload) {
+    CreateSurvey({ state, commit }) {
       return new Promise((resolve, reject) => {
-        console.log(payload)
-        // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`
-        // axios.post('http://localhost:9010/api/auth/survey')
-        //   .then(Response => {
-        //     commit('GET_SURVEYLIST', Response.data)
-        //   })
-        //   .catch(Error => {
-        //     reject(Error)
-        //     console.log('CreateSurvey_error')
-        //   })
+        console.log(state.Survey)
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`
+        axios.post('http://localhost:9010/api/auth/survey', state.Survey)
+          .then(Response => {
+            commit('GET_SURVEYLIST', Response.data)
+          })
+          .catch(Error => {
+            reject(Error)
+            console.log('CreateSurvey_error')
+          })
       })
     },
     getSurveyList({ commit }) {

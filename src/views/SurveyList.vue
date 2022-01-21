@@ -42,7 +42,7 @@ export default {
           text: "NUM",
           align: "start",
           sortable: false,
-          value: "s_num",
+          value: "rownum",
         },
         { text: "TITLE", value: "title" },
         { text: "WRITER", value: "writer" },

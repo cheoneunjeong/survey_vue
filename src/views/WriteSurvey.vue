@@ -29,7 +29,7 @@
       <v-btn router :to="{ name: 'SurveyList' }">
         <font-awesome-icon icon="backspace" />
       </v-btn>
-      <v-btn> save </v-btn>
+      <v-btn @click="save"> save </v-btn>
     </v-col>
   </div>
 </template>
@@ -39,7 +39,7 @@ import LongAnswer from "@/views/LongAnswer";
 import RadioAnswer from "@/views/RadioAnswer";
 import CheckBox from "@/views/CheckBox.vue";
 import DropDown from "@/views/DropDown.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -78,7 +78,7 @@ export default {
     ...mapActions(["CreateSurvey"]),
 
     addQuestion() {
-      this.$store.state.Survey.questions.push({ q: {}, answers: [] });
+      this.$store.state.Survey.questions.push({ t: {}, q: {}, answers: [] });
       this.Questions.push(ShortAnswer);
     },
     deleteQuestion(num) {
@@ -101,6 +101,9 @@ export default {
       } else {
         this.Questions.splice(index, 1, DropDown);
       }
+    },
+    save() {
+      this.CreateSurvey();
     },
   },
   created() {
