@@ -107,7 +107,8 @@ export default {
     },
   },
   created() {
-    this.$store.state.Survey.questions.push({ q: {}, answers: [] });
+    (this.$store.state.Survey = { title: "", disc: "", questions: [] }),
+      this.$store.state.Survey.questions.push({ q: {}, answers: [] });
     this.Questions.push(ShortAnswer);
   },
 };

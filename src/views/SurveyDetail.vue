@@ -3,7 +3,8 @@
     <v-card class="mx-auto" width="80%">
       <v-card-text>
         <div>survey num_{{ SurveyDetail.s_num }}</div>
-        <p class="text-h4 text--primary">{{ SurveyDetail.title }}</p>
+        <span class="text-h4 text--primary"> {{ SurveyDetail.title }} </span>
+        <span>: {{ SurveyDetail.disc }}</span>
         <p>{{ SurveyDetail.datetime }}</p>
         <br />
         <component
