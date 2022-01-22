@@ -25,12 +25,13 @@
         :headers="headers"
         :items="SurveyList"
         :search="search"
+        @click:row="surveyDetail"
       ></v-data-table>
     </v-card>
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -48,11 +49,19 @@ export default {
         { text: "WRITER", value: "writer" },
         { text: "DATE_TIME", value: "datetime" },
         { text: "HIT", value: "hit" },
+        { text: "s_num", value: "s_num", align: " d-none" },
       ],
     };
   },
   computed: {
     ...mapState(["SurveyList"]),
+  },
+  methods: {
+    ...mapActions(["getSurveyDetail"]),
+
+    surveyDetail(row) {
+      this.getSurveyDetail(row.s_num);
+    },
   },
   created() {
     this.$store.dispatch("getSurveyList");

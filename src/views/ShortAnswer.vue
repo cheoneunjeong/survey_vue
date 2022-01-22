@@ -54,7 +54,7 @@ export default {
   computed: {
     question: {
       get() {
-        this.$store.state.Survey.questions[this.index].t = "ShortAnswer";
+        this.$store.state.Survey.questions[this.index].t = "ShortQ";
         return this.$store.state.Survey.questions[this.index].q;
       },
       set(value) {

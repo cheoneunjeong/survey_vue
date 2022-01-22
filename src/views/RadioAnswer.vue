@@ -69,7 +69,7 @@ export default {
   computed: {
     question: {
       get() {
-        this.$store.state.Survey.questions[this.index].t = "RadioAnswer";
+        this.$store.state.Survey.questions[this.index].t = "RadioQ";
         return this.$store.state.Survey.questions[this.index].q;
       },
       set(value) {

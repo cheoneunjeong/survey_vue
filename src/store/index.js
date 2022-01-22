@@ -12,6 +12,7 @@ export default new Vuex.Store({
     login_success: false,
     SurveyList: [],
     Survey: { title: '', disc: '', questions: [] },
+    SurveyDetail: { s_num: '', title: '', disc: '', writer: '', datetime: '', hit: '', questions: [] },
   },
   mutations: {
     LOGIN_USER(state, data) {
@@ -64,6 +65,9 @@ export default new Vuex.Store({
     updateOptions(state, data) {
       state.Survey.questions[data.index].answers = data.value
     },
+    GET_SURVEYDETAIL(state, data) {
+      state.SurveyDetail = data
+    }
 
   },
   actions: {
@@ -123,6 +127,7 @@ export default new Vuex.Store({
         axios.post('http://localhost:9010/api/auth/survey', state.Survey)
           .then(Response => {
             commit('GET_SURVEYLIST', Response.data)
+            Route.push("/surveylist")
           })
           .catch(Error => {
             reject(Error)
@@ -138,6 +143,19 @@ export default new Vuex.Store({
           })
           .catch(Error => {
             console.log('getSurveyList_error')
+          })
+      })
+    },
+    getSurveyDetail({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axios.get('http://localhost:9010/api/public/survey', { params: { s_num: payload } })
+          .then(Response => {
+            console.log(Response.data)
+            commit('GET_SURVEYDETAIL', Response.data)
+            Route.push('/surveydetail')
+          })
+          .catch(Error => {
+            console.log('getSurveyDetail_error')
           })
       })
     }
