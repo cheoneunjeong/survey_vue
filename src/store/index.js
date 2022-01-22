@@ -13,6 +13,8 @@ export default new Vuex.Store({
     SurveyList: [],
     Survey: { title: '', disc: '', questions: [] },
     SurveyDetail: { s_num: '', title: '', disc: '', writer: '', datetime: '', hit: '', questions: [] },
+    Answers: { s_num: '', questions: [] },
+    questions: [{ q_num: '', answer: [], t: '', }]
   },
   mutations: {
     LOGIN_USER(state, data) {
@@ -67,6 +69,15 @@ export default new Vuex.Store({
     },
     GET_SURVEYDETAIL(state, data) {
       state.SurveyDetail = data
+    },
+    update_S_num(state, data) {
+      state.Answers.s_num = data
+    },
+    update_SingleAnswer(state, data) {
+      state.Answers.questions[data.index].answers[0] = data.value
+    },
+    update_MultipleAnswer(state, data) {
+      state.Answers.questions[data.index].answers = data.value
     }
 
   },
@@ -150,13 +161,26 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios.get('http://localhost:9010/api/public/survey', { params: { s_num: payload } })
           .then(Response => {
-            console.log(Response.data)
             commit('GET_SURVEYDETAIL', Response.data)
             Route.push('/surveydetail')
           })
           .catch(Error => {
             console.log('getSurveyDetail_error')
           })
+      })
+    },
+    SubmitAnswers({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        console.log(state.Answers)
+        // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`
+        // axios.post('http://localhost:9010/api/auth/survey-answers', state.Answers)
+        //   .then(Response => {
+        //     alert("응답 완료")
+        //     Route.push('/surveylist')
+        //   })
+        //   .catch(Error => {
+        //     console.log('SubmitAnswers_error')
+        //   })
       })
     }
   },

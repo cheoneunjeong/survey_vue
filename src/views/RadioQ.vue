@@ -16,11 +16,27 @@
 </template>
 <script>
 export default {
-  props: ["question", "answers"],
+  props: ["question", "answers", "q_num", "index"],
   data() {
-    return {
-      radioGroup: 1,
-    };
+    return {};
+  },
+  computed: {
+    radioGroup: {
+      get() {
+        return this.$store.state.Answers.questions[this.index].answers[0];
+      },
+      set(value) {
+        let data = { value: value, index: this.index };
+        this.$store.commit("update_SingleAnswer", data);
+      },
+    },
+  },
+  created() {
+    this.$store.state.Answers.questions.push({
+      q_num: this.q_num,
+      t: "RadioQ",
+      answers: [],
+    });
   },
 };
 </script>

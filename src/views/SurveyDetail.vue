@@ -12,11 +12,13 @@
           :is="item.t"
           :key="index"
           :question="item.q"
+          :q_num="item.q_num"
+          :index="index"
           :answers="item.answers"
         />
       </v-card-text>
       <v-card-actions>
-        <v-btn text color="teal accent-4"> submit </v-btn>
+        <v-btn text color="teal accent-4" @click="submit"> submit </v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -37,6 +39,15 @@ export default {
   },
   computed: {
     ...mapState(["SurveyDetail"]),
+  },
+  methods: {
+    submit() {
+      this.$store.dispatch("SubmitAnswers");
+    },
+  },
+  created() {
+    this.$store.state.Answers = { s_num: "", questions: [] };
+    this.$store.commit("update_S_num", this.SurveyDetail.s_num);
   },
 };
 </script>

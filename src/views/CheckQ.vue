@@ -15,11 +15,27 @@
 </template>
 <script>
 export default {
-  props: ["question", "answers"],
+  props: ["question", "answers", "q_num", "index"],
   data() {
-    return {
-      selected: [],
-    };
+    return {};
+  },
+  computed: {
+    selected: {
+      get() {
+        return this.$store.state.Answers.questions[this.index].answers;
+      },
+      set(value) {
+        let data = { value: value, index: this.index };
+        this.$store.commit("update_MultipleAnswer", data);
+      },
+    },
+  },
+  created() {
+    this.$store.state.Answers.questions.push({
+      q_num: this.q_num,
+      t: "CheckQ",
+      answers: [],
+    });
   },
 };
 </script>

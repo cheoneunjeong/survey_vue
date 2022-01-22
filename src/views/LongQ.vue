@@ -9,6 +9,24 @@
 </template>
 <script>
 export default {
-  props: ["question"],
+  props: ["question", "q_num", "index"],
+  computed: {
+    answer: {
+      get() {
+        return this.$store.state.Answers.questions[this.index].answers[0];
+      },
+      set(value) {
+        let data = { value: value, index: this.index };
+        this.$store.commit("update_SingleAnswer", data);
+      },
+    },
+  },
+  created() {
+    this.$store.state.Answers.questions.push({
+      q_num: this.q_num,
+      t: "LongQ",
+      answers: [],
+    });
+  },
 };
 </script>
