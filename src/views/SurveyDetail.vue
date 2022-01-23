@@ -19,6 +19,9 @@
       </v-card-text>
       <v-card-actions>
         <v-btn text color="teal accent-4" @click="submit"> submit </v-btn>
+        <v-btn text color="teal accent-4" router @click="results">
+          View results
+        </v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -43,6 +46,9 @@ export default {
   methods: {
     submit() {
       this.$store.dispatch("SubmitAnswers");
+    },
+    results() {
+      this.$store.dispatch("getResults", this.SurveyDetail.s_num);
     },
   },
   created() {

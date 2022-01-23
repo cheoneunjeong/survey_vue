@@ -5,7 +5,6 @@
     <v-col cols="12" md="5">
       <v-text-field v-model="answer" label="단답형입니다."></v-text-field>
     </v-col>
-    <v-btn @click="test"></v-btn>
   </div>
 </template>
 <script>
@@ -20,11 +19,6 @@ export default {
         let data = { value: value, index: this.index };
         this.$store.commit("update_SingleAnswer", data);
       },
-    },
-  },
-  methods: {
-    test() {
-      console.log(this.$store.state.Answers);
     },
   },
   created() {

@@ -8,6 +8,7 @@ import User from '../views/User'
 import SurveyList from '../views/SurveyList'
 import WriteSurvey from '../views/WriteSurvey'
 import SurveyDetail from '../views/SurveyDetail'
+import Response from '../views/Response'
 Vue.use(VueRouter)
 
 const rejectAuthUser = (to, from, next) => {
@@ -73,6 +74,11 @@ const routes = [
     path: '/surveydetail',
     name: 'SurveyDetail',
     component: SurveyDetail
+  },
+  {
+    path: '/response',
+    name: 'Response',
+    component: Response
   },
 ]
 

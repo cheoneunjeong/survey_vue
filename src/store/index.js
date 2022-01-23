@@ -14,7 +14,7 @@ export default new Vuex.Store({
     Survey: { title: '', disc: '', questions: [] },
     SurveyDetail: { s_num: '', title: '', disc: '', writer: '', datetime: '', hit: '', questions: [] },
     Answers: { s_num: '', questions: [] },
-    questions: [{ q_num: '', answer: [], t: '', }]
+    Response: { s_num: '', questions: [] },
   },
   mutations: {
     LOGIN_USER(state, data) {
@@ -78,6 +78,10 @@ export default new Vuex.Store({
     },
     update_MultipleAnswer(state, data) {
       state.Answers.questions[data.index].answers = data.value
+    },
+    GET_SURVEYRESULTS(state, data) {
+      state.Response.s_num = data.s_num
+      state.Response.questions = data.questions
     }
 
   },
@@ -171,16 +175,28 @@ export default new Vuex.Store({
     },
     SubmitAnswers({ commit, state }) {
       return new Promise((resolve, reject) => {
-        console.log(state.Answers)
-        // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`
-        // axios.post('http://localhost:9010/api/auth/survey-answers', state.Answers)
-        //   .then(Response => {
-        //     alert("응답 완료")
-        //     Route.push('/surveylist')
-        //   })
-        //   .catch(Error => {
-        //     console.log('SubmitAnswers_error')
-        //   })
+        axios.post('http://localhost:9010/api/public/survey-answers', state.Answers)
+          .then(Response => {
+            alert("응답 완료")
+            Route.push('/surveylist')
+          })
+          .catch(Error => {
+            console.log('SubmitAnswers_error')
+          })
+      })
+    },
+    getResults({ commit, state }, payload) {
+      return new Promise((resolve, reject) => {
+        axios.get('http://localhost:9010/api/public/survey-answers', { params: { s_num: payload } })
+          .then(Response => {
+            console.log(Response.data)
+            commit('GET_SURVEYRESULTS', Response.data)
+            console.log(state.Response)
+            Route.push('/response')
+          })
+          .catch(Error => {
+            console.log('getResults_error')
+          })
       })
     }
   },
