@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Route from '@/router/index'
 import axios from 'axios'
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -198,6 +197,21 @@ export default new Vuex.Store({
             console.log('getResults_error')
           })
       })
+    },
+    deleteSurvey({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`
+        axios.delete('http://localhost:9010/api/auth/survey', { params: { s_num: payload } })
+          .then(Response => {
+            commit('GET_SURVEYLIST', Response.data)
+            Route.push('/surveylist')
+          })
+          .catch(Error => {
+            alert('권한 없음')
+            console.log('deleteSurvey_error')
+          })
+      })
+
     }
   },
   modules: {

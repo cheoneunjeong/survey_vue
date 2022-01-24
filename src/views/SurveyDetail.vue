@@ -24,6 +24,10 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+    <br />
+    <v-col cols="12" align="right">
+      <v-btn @click="deleteSurvey">Delete</v-btn>
+    </v-col>
   </div>
 </template>
 
@@ -49,6 +53,9 @@ export default {
     },
     results() {
       this.$store.dispatch("getResults", this.SurveyDetail.s_num);
+    },
+    deleteSurvey() {
+      this.$store.dispatch("deleteSurvey", this.SurveyDetail.s_num);
     },
   },
   created() {
